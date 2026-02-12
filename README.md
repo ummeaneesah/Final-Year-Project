@@ -21,3 +21,7 @@ Github Repository - Uploading different materials used in the making of this pro
 The Methods:
 
 Rule-Based Labelling 
+
+READ THIS:
+
+The Vitamin_Dataset cant be uploaded to this repo as it is too big of a file. 
