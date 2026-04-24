@@ -107,7 +107,7 @@ for _, row in chosen_df.iterrows():
         min_value=float(min_dose),
         max_value=float(max_dose),
         value=float(min_dose),
-        key=f"dose_{row['Product Name']}"
+        key=f"dose_{row.name}_{row['Product Name']}"
     )
 
     timing = compute_timing(row)
