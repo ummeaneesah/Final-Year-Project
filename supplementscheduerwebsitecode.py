@@ -24,7 +24,7 @@ st.set_page_config(
 # LOAD DATA
 @st.cache_data
 def load_data():
-    return pd."/content/Vitamin_RuleModel_Output (6).csv.gz")
+    return pd.read_csv("Vitamin_RuleModel_Output (6).csv.gz")
 
 df = load_data()
 
