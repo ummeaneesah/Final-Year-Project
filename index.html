@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supplement Scheduler</title>
+</head>
+<body>
+    <h1>Supplement Scheduler</h1>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <h3>Select Supplements</h3>
+
+        {% for product in products %}
+            <input type="checkbox" name="products" value="{{ product }}">
+            {{ product }}<br>
+        {% endfor %}
+      
+        <h3>Cycle Options</h3>
+        <input type="checkbox" name="use_cycle" value="yes">
+        <label>Enable supplement cycling (30 days on / 7 days off)</label>
+        <br><br>
+
+        <label>Cycle start date:</label>
+        <input type="date" name="cycle_start">
+        
+        <h3>Doses</h3>
+        {% for row in range(products|length) %}
+            <label>Dose (row {{ row }}):</label>
+            <input type="text" name="dose_{{ row }}"><br>
+        {% endfor %}
+
+        <br>
+        <button type="submit">Generate Schedule</button>
+    </form>
+</body>
+</html>
