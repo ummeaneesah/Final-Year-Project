@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css    
-<head>
+<html>    
+<<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css>
     <title>Supplement Scheduler</title>
 </head>
 <body>
@@ -14,10 +13,11 @@
     <form method="POST">
         <h3>Select Supplements</h3>
 
+        <select name="products" multiple="multiple" id="supplement-select" style="width: 100%;">
         {% for product in products %}
-            <input type="checkbox" name="products" value="{{ product }}">
-            {{ product }}<br>
-        {% endfor %}
+        <option value="{{ product }}">{{ product }}</option>
+    {% endfor %}
+        </select>
       
         <h3>Cycle Options</h3>
         <input type="checkbox" name="use_cycle" value="yes">
