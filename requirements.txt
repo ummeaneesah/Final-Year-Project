@@ -1,5 +1,5 @@
-streamlit
+flask
 pandas
-openpyxl
 reportlab
 python-dateutil
+gunicorn
