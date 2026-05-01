@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Schedule</title>
+</head>
+<body>
+    <h1>Today’s Schedule</h1>
+
+    <ul>
+        {% for row in schedule %}
+            <li>
+                <b>{{ row.Supplement }}</b> – {{ row.Dose }}
+                ({{ row.Timing }})<br>
+                <i>{{ row.Instructions }}</i>
+            </li>
+        {% endfor %}
+    </ul>
+
+    /download
+        <input type="hidden" name="schedule_data"
+               value="{{ schedule }}">
+        <button type="submit">Download PDF</button>
+    </form>
+
+    <br>
+    /Back</a>
+</body>
+</html>
