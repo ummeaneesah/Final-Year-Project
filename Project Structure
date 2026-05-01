@@ -1,0 +1,7 @@
+final-year-project/
+├─ app.py
+├─ requirements.txt
+├─ Vitamin_RuleModel_Output (6).csv.gz
+└─ templates/
+   ├─ index.html
+   └─ schedule.html
