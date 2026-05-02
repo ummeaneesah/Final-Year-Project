@@ -3,7 +3,7 @@ import os
 
 # Load Excel once (IMPORTANT: don't reload for every request)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.path.join(BASE_DIR, "data", "Vitamin_RuleModel_Output.xlsx")
+DATA_PATH = os.path.join(BASE_DIR, "data", "")
 
 df = pd.read_excel(DATA_PATH)
 
