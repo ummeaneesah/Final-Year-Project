@@ -1,10 +1,13 @@
 import pandas as pd
 import os
 
-# Load Excel once (IMPORTANT: don't reload for every request)
+# Base directory = project root
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.path.join(BASE_DIR, "data", "data/Vitamin_RuleModel_Output .zip")
 
+# Correct path to Excel 
+DATA_PATH = os.path.join(BASE_DIR, "data", "Vitamin_RuleModel_Output.xlsx")
+
+# Load Excel ONCE
 df = pd.read_excel(DATA_PATH)
 
 def get_recommendations(selected_supplements):
@@ -15,7 +18,9 @@ def get_recommendations(selected_supplements):
     results = []
 
     for supplement in selected_supplements:
-        match = df[df["Product Name"].str.contains(supplement, case=False, na=False)]
+        match = df[df["Product Name"].str.contains(
+            supplement, case=False, na=False
+        )]
 
         if match.empty:
             continue
@@ -32,4 +37,3 @@ def get_recommendations(selected_supplements):
             })
 
     return results
-``
