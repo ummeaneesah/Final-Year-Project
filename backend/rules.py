@@ -2,7 +2,6 @@ import os
 import pandas as pd
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
 DATA_PATH = os.path.join(
     BASE_DIR,
     "data",
@@ -10,71 +9,50 @@ DATA_PATH = os.path.join(
     "Vitamin_RuleModel_Output (7).xlsb"
 )
 
+# ✅ GLOBAL CACHE
+_rules_df = None
+
+def load_rules_df():
+    global _rules_df
+    if _rules_df is None:
+        _rules_df = pd.read_excel(DATA_PATH, engine="pyxlsb")
+        _rules_df.columns = _rules_df.columns.str.strip()
+    return _rules_df
+
+
 def get_supplements_list():
-    # Load ALL sheets
-    sheets = pd.read_excel(
-        DATA_PATH,
-        engine="pyxlsb",
-        sheet_name=None
+    df = load_rules_df()
+    return sorted(
+        df["Product Name"]
+        .dropna()
+        .astype(str)
+        .str.strip()
+        .unique()
+        .tolist()
     )
-
-    # Print available sheet names (for safety)
-    # Choose the sheet that actually contains the data
-    df = sheets[list(sheets.keys())[0]]
-
-    # Normalize column names
-    df.columns = df.columns.str.strip()
-
-    # Inspect likely column names
-    possible_columns = [
-        "Product Name",
-        "Product",
-        "Supplement",
-        "Supplement Name"
-    ]
-
-    for col in possible_columns:
-        if col in df.columns:
-            names = (
-                df[col]
-                .dropna()
-                .astype(str)
-                .str.strip()
-                .unique()
-                .tolist()
-            )
-            return sorted(names)
-
-    return []
 
 
 def derive_recommended_time(row):
-    if pd.notna(row.get("bedtime")) and row["bedtime"]:
+    if row.get("bedtime"):
         return "bedtime"
-    if pd.notna(row.get("evening")) and row["evening"]:
+    if row.get("evening"):
         return "evening"
-    if pd.notna(row.get("morning")) and row["morning"]:
+    if row.get("morning"):
         return "morning"
     return "anytime"
-    
+
 
 def get_recommendations(selected_supplements):
-    # ✅ Load data lazily (safe for Render)
-    rules_df = pd.read_excel(DATA_PATH, engine="pyxlsb")
+    df = load_rules_df()
+    matched = df[df["Product Name"].isin(selected_supplements)]
 
     results = []
-
-    matched = rules_df[
-        rules_df["Product Name"].isin(selected_supplements)
-    ]
-
     for _, row in matched.iterrows():
         results.append({
             "product": row["Product Name"],
-            "dose_min": int(row["dose_min"]) if pd.notna(row["dose_min"]) else None,
-            "dose_max": int(row["dose_max"]) if pd.notna(row["dose_max"]) else None,
+            "dose_min": int(row["dose_min"]) if pd.notna(row.get("dose_min")) else None,
+            "dose_max": int(row["dose_max"]) if pd.notna(row.get("dose_max")) else None,
             "recommended_time": derive_recommended_time(row),
-            "notes": row["suggested_use_clean"] if pd.notna(row["suggested_use_clean"]) else None
+            "notes": row.get("suggested_use_clean")
         })
-
     return results
