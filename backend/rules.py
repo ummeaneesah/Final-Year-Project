@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DATA_PATH = os.path.join(
     BASE_DIR,
@@ -10,7 +10,6 @@ DATA_PATH = os.path.join(
     "Vitamin_RuleModel_Output (7).xlsb"
 )
 
-rules_df = pd.read_excel(DATA_PATH, engine="pyxlsb")
 
 def derive_recommended_time(row):
     if pd.notna(row.get("bedtime")) and row["bedtime"]:
@@ -23,6 +22,9 @@ def derive_recommended_time(row):
 
 
 def get_recommendations(selected_supplements):
+    # ✅ Load data lazily (safe for Render)
+    rules_df = pd.read_excel(DATA_PATH, engine="pyxlsb")
+
     results = []
 
     matched = rules_df[
