@@ -10,6 +10,43 @@ DATA_PATH = os.path.join(
     "Vitamin_RuleModel_Output (7).xlsb"
 )
 
+def get_supplements_list():
+    # Load ALL sheets
+    sheets = pd.read_excel(
+        DATA_PATH,
+        engine="pyxlsb",
+        sheet_name=None
+    )
+
+    # Print available sheet names (for safety)
+    # Choose the sheet that actually contains the data
+    df = sheets[list(sheets.keys())[0]]
+
+    # Normalize column names
+    df.columns = df.columns.str.strip()
+
+    # Inspect likely column names
+    possible_columns = [
+        "Product Name",
+        "Product",
+        "Supplement",
+        "Supplement Name"
+    ]
+
+    for col in possible_columns:
+        if col in df.columns:
+            names = (
+                df[col]
+                .dropna()
+                .astype(str)
+                .str.strip()
+                .unique()
+                .tolist()
+            )
+            return sorted(names)
+
+    return []
+
 
 def derive_recommended_time(row):
     if pd.notna(row.get("bedtime")) and row["bedtime"]:

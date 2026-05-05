@@ -7,14 +7,21 @@ app = Flask(__name__)
 def home():
     return {"status": "Supplement Scheduler Backend Running"}
 
+@app.route("/debug-columns")
+def debug_columns():
+    from rules import load_rules_df
+    df = load_rules_df()
+    return {
+        "columns": list(df.columns),
+        "rows": len(df),
+        "non_null_product_names": int(df["Product Name"].notna().sum())
+    }
+
 @app.route("/supplements", methods=["GET"])
-def list_supplements():
-    # Example response – adapt as needed
-    return jsonify([
-        "Vitamin D",
-        "Magnesium",
-        "Inositol"
-    ])
+def supplements():
+    from rules import get_supplements_list
+    return jsonify(get_supplements_list())
+
 
 @app.route("/recommend", methods=["POST"])
 def recommend():
