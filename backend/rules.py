@@ -19,7 +19,7 @@ def derive_recommended_time(row):
     if pd.notna(row.get("morning")) and row["morning"]:
         return "morning"
     return "anytime"
-
+    
 
 def get_recommendations(selected_supplements):
     # ✅ Load data lazily (safe for Render)
