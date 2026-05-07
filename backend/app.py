@@ -1,37 +1,24 @@
 from flask import Flask, jsonify, request
-from rules import get_recommendations
+from flask_cors import CORS
+from rules import get_supplements_list, get_recommendations
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/", methods=["GET"])
 def home():
-    return {"status": "Supplement Scheduler Backend Running"}
-
-@app.route("/debug-columns")
-def debug_columns():
-    from rules import load_rules_df
-    df = load_rules_df()
-    return {
-        "columns": list(df.columns),
-        "rows": len(df),
-        "non_null_product_names": int(df["Product Name"].notna().sum())
-    }
+    return {"status": "Flask backend running locally"}
 
 @app.route("/supplements", methods=["GET"])
 def supplements():
-    from rules import get_supplements_list
     return jsonify(get_supplements_list())
-
 
 @app.route("/recommend", methods=["POST"])
 def recommend():
     data = request.get_json()
     supplements = data.get("supplements", [])
-    results = get_recommendations(supplements)
-    return jsonify(results)
+    return jsonify(get_recommendations(supplements))
 
-import os
-
+print("REGISTERED ROUTES:", app.url_map)
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True)

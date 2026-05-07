@@ -1,5 +1,7 @@
 // frontend/b_dC5UvpAfhA/lib/supplement-data.ts
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE
+
 export interface SupplementScheduleItem {
   product: string
   dose_min: number | null
@@ -11,7 +13,7 @@ export interface SupplementScheduleItem {
 export async function fetchSchedule(
   supplements: string[]
 ): Promise<SupplementScheduleItem[]> {
-  const res = await fetch('http://127.0.0.1:5000/recommend', {
+  const res = await fetch(`${API_BASE}/recommend`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -26,9 +28,8 @@ export async function fetchSchedule(
   return res.json()
 }
 
-
 export async function fetchSupplementNames(): Promise<string[]> {
-  const res = await fetch('http://127.0.0.1:5000/supplements')
+  const res = await fetch(`${API_BASE}/supplements`)
 
   if (!res.ok) {
     throw new Error('Failed to fetch supplement names')
