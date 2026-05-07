@@ -11,8 +11,7 @@ next.user-config.*
 .env*.local
 
 # Common ignores
-node_modules
+node_modules/
 .next/
-.
 __pycache__/
 *.pyc
